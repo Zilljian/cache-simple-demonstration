@@ -1,0 +1,9 @@
+spring:
+  redis:
+    host: "localhost"
+    port: 63790
+postgres:
+  driver: "org.postgresql.Driver"
+  url: "jdbc:postgresql://localhost:54320/hse"
+  password: "strong password"
+  login: "app_user"
