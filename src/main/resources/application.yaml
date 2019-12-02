@@ -6,4 +6,9 @@ postgres:
   driver: "org.postgresql.Driver"
   url: "jdbc:postgresql://localhost:54320/hse"
   password: "strong password"
-  login: "app_user"
+  login: "local_app"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"

@@ -23,7 +23,6 @@ public class RedisConfiguration {
         return RedisURI.Builder
             .redis(host)
             .withPort(port)
-            .withPassword("password")
             .withDatabase(1)
             .build();
     }
