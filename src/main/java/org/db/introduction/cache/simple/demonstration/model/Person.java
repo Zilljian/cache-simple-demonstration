@@ -1,4 +1,4 @@
-package org.db.introduction.cache_simple_demonstration.model;
+package org.db.introduction.cache.simple.demonstration.model;
 
 import lombok.Builder;
 import lombok.Data;

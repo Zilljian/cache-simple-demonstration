@@ -1,15 +1,13 @@
-package org.db.introduction.cache_simple_demonstration.service;
+package org.db.introduction.cache.simple.demonstration.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.db.introduction.cache_simple_demonstration.mapper.PersonRowMapper;
-import org.db.introduction.cache_simple_demonstration.model.Person;
+import org.db.introduction.cache.simple.demonstration.mapper.PersonRowMapper;
+import org.db.introduction.cache.simple.demonstration.model.Person;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;

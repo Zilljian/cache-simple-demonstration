@@ -1,5 +1,4 @@
-/*
-package org.db.introduction.cache_simple_demonstration.configuration;
+package org.db.introduction.cache.simple.demonstration.configuration;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
@@ -29,4 +28,3 @@ public class RedisConfiguration {
             .build();
     }
 }
-*/

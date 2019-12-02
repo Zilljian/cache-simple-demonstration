@@ -1,6 +1,6 @@
-package org.db.introduction.cache_simple_demonstration.mapper;
+package org.db.introduction.cache.simple.demonstration.mapper;
 
-import org.db.introduction.cache_simple_demonstration.model.Person;
+import org.db.introduction.cache.simple.demonstration.model.Person;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

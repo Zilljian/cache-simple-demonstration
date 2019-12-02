@@ -1,8 +1,8 @@
-package org.db.introduction.cache_simple_demonstration.logic;
+package org.db.introduction.cache.simple.demonstration.logic;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.db.introduction.cache_simple_demonstration.service.PostgresDaoAdapter;
+import org.db.introduction.cache.simple.demonstration.service.PostgresDaoAdapter;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

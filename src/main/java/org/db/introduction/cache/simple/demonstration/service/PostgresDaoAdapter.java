@@ -1,7 +1,7 @@
-package org.db.introduction.cache_simple_demonstration.service;
+package org.db.introduction.cache.simple.demonstration.service;
 
 import lombok.RequiredArgsConstructor;
-import org.db.introduction.cache_simple_demonstration.model.Person;
+import org.db.introduction.cache.simple.demonstration.model.Person;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
