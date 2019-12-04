@@ -10,11 +10,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
-import static java.util.Optional.ofNullable;
-import static org.db.introduction.cache.simple.demonstration.util.LogInjector.debugLog;
+import static org.db.introduction.cache.simple.demonstration.util.LogInjector.infoLog;
 
 @Slf4j
 @Component
@@ -25,45 +23,38 @@ public class PostgresDao {
     private final PersonRowMapper personRowMapper;
 
     List<Person> selectAll() {
-        return onRequest(
+        return infoLog(() -> onRequest(
             () -> jdbcTemplate.query("SELECT id, name, surname, passport, town FROM hse.person", personRowMapper)
-        );
+        ));
     }
 
     List<Person> selectFirstN(MapSqlParameterSource parameters) {
-        return onRequest(
+        return infoLog(() -> onRequest(
             () -> jdbcTemplate.query(
-                "SELECT id, name, surname, passport, town FROM hse.person LIMIT :amount", parameters,
-                personRowMapper), parameters
-        );
+                "SELECT id, name, surname, passport, town FROM hse.person LIMIT :amount", parameters, personRowMapper)
+        ), parameters);
     }
 
     Person selectPersonById(MapSqlParameterSource parameters) {
-        return onRequest(
+        return infoLog(() -> onRequest(
             () -> jdbcTemplate.queryForObject(
-                "SELECT id, name, surname, passport, town FROM hse.person WHERE id = :id", parameters,
-                personRowMapper), parameters
-        );
+                "SELECT id, name, surname, passport, town FROM hse.person WHERE id = :id", parameters, personRowMapper)
+        ), parameters);
     }
 
     void insertPerson(MapSqlParameterSource parameters) {
-        debugLog(
-            () -> onRequest(
-                () -> jdbcTemplate.update("INSERT INTO hse.person (id, name, surname, passport, town) "
-                                              + "VALUES(:id, :name, :surname, :passport, :town)", parameters),
-                parameters
-            )
-        );
+        infoLog(() -> onRequest(
+            () -> jdbcTemplate.update("INSERT INTO hse.person (id, name, surname, passport, town) "
+                                          + "VALUES(:id, :name, :surname, :passport, :town)", parameters)
+        ), parameters);
     }
 
-    private <R> R onRequest(Supplier<R> getDataCallback, Object... parameters) {
+    private <R> R onRequest(Supplier<R> getDataCallback) {
         try {
-            log.info("Trying to query database with parameters: {}",
-                     ofNullable(parameters)
-                         .map(Objects::toString)
-                         .orElse("no parameters"));
+            log.info("Trying to query database");
             return getDataCallback.get();
         } catch (DataAccessException e) {
+            log.info("Error occurred while trying to execute query to db, with message: {}", e.getMessage());
             return null;
         }
     }

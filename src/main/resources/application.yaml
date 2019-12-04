@@ -14,3 +14,7 @@ management:
         include: "prometheus"
 server:
   port: 8080
+logging:
+  level:
+    org.db.intorduction.cache.simple.demonstration: debug
+    root: info

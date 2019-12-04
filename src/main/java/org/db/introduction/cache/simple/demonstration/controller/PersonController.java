@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.db.introduction.cache.simple.demonstration.util.LogInjector.errorAwareInfoLog;
+
 @Slf4j
-@RestController("/persons")
+@RestController
+@RequestMapping("/persons")
 @RequiredArgsConstructor
 public class PersonController {
 
@@ -25,7 +29,7 @@ public class PersonController {
     @GetMapping(value = "/{id:[\\d]+}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Person> getPerson(@PathVariable("id") long id) {
         log.info("Received request for entry with id = {}", id);
-        var person = postgresDaoAdapter.getPersonById(id);
+        var person = errorAwareInfoLog(() -> postgresDaoAdapter.getPersonById(id));
         return new ResponseEntity<>(person, HttpStatus.OK);
     }
 
@@ -33,5 +37,6 @@ public class PersonController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addPerson(@RequestBody Person person) {
         log.info("Received request for inserting with body = {}", person);
+        errorAwareInfoLog(() -> postgresDaoAdapter.insertPerson(person));
     }
 }
