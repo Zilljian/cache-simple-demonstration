@@ -18,7 +18,7 @@ public class PostgresConfiguration {
     }
 
     @Bean
-    public DataSource mysqlDataSource(PostgresConnectionProperties properties) {
+    public DataSource postgresDataSource(PostgresConnectionProperties properties) {
         var dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(properties.getDriver());
         dataSource.setUrl(properties.getUrl());
