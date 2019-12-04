@@ -1,4 +1,4 @@
-package org.db.introduction.cache.simple.demonstration.configuration;
+package org.db.introduction.cache.backend.configuration;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;

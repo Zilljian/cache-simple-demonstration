@@ -1,4 +1,4 @@
-package org.db.introduction.cache.simple.demonstration;
+package org.db.introduction.cache.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

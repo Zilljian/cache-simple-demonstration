@@ -1,8 +1,8 @@
-package org.db.introduction.cache.simple.demonstration.mapper;
+package org.db.introduction.cache.backend.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.db.introduction.cache.simple.demonstration.model.Person;
-import org.db.introduction.cache.simple.demonstration.util.PrintableMapSqlParameterSource;
+import org.db.introduction.cache.backend.model.Person;
+import org.db.introduction.cache.backend.util.PrintableMapSqlParameterSource;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package org.db.introduction.cache.simple.demonstration;
+package org.db.introduction.cache.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

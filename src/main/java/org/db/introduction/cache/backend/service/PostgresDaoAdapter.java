@@ -1,10 +1,10 @@
-package org.db.introduction.cache.simple.demonstration.service;
+package org.db.introduction.cache.backend.service;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.db.introduction.cache.simple.demonstration.mapper.PersonRowMapper.SqlParametersBuilder;
-import org.db.introduction.cache.simple.demonstration.model.Person;
-import org.db.introduction.cache.simple.demonstration.util.PrintableMapSqlParameterSource;
+import org.db.introduction.cache.backend.model.Person;
+import org.db.introduction.cache.backend.util.PrintableMapSqlParameterSource;
+import org.db.introduction.cache.backend.mapper.PersonRowMapper.SqlParametersBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

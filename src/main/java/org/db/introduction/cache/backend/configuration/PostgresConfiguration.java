@@ -1,6 +1,6 @@
-package org.db.introduction.cache.simple.demonstration.configuration;
+package org.db.introduction.cache.backend.configuration;
 
-import org.db.introduction.cache.simple.demonstration.model.PostgresConnectionProperties;
+import org.db.introduction.cache.backend.model.PostgresConnectionProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package org.db.introduction.cache.simple.demonstration.util;
+package org.db.introduction.cache.backend.util;
 
 import lombok.EqualsAndHashCode;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

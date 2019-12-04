@@ -1,9 +1,10 @@
-package org.db.introduction.cache.simple.demonstration.controller;
+package org.db.introduction.cache.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.db.introduction.cache.simple.demonstration.model.Person;
-import org.db.introduction.cache.simple.demonstration.service.PostgresDaoAdapter;
+import org.db.introduction.cache.backend.model.Person;
+import org.db.introduction.cache.backend.util.LogInjector;
+import org.db.introduction.cache.backend.service.PostgresDaoAdapter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.db.introduction.cache.simple.demonstration.util.LogInjector.errorAwareInfoLog;
+import static org.db.introduction.cache.backend.util.LogInjector.errorAwareInfoLog;
 
 @Slf4j
 @RestController
@@ -29,7 +30,7 @@ public class PersonController {
     @GetMapping(value = "/{id:[\\d]+}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Person> getPerson(@PathVariable("id") long id) {
         log.info("Received request for entry with id = {}", id);
-        var person = errorAwareInfoLog(() -> postgresDaoAdapter.getPersonById(id));
+        var person = LogInjector.errorAwareInfoLog(() -> postgresDaoAdapter.getPersonById(id));
         return new ResponseEntity<>(person, HttpStatus.OK);
     }
 
@@ -37,6 +38,6 @@ public class PersonController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addPerson(@RequestBody Person person) {
         log.info("Received request for inserting with body = {}", person);
-        errorAwareInfoLog(() -> postgresDaoAdapter.insertPerson(person));
+        LogInjector.errorAwareInfoLog(() -> postgresDaoAdapter.insertPerson(person));
     }
 }
