@@ -2,7 +2,7 @@ package org.db.introduction.cache.simple.demonstration.configuration;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
-import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.async.RedisAsyncCommands;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,10 +11,11 @@ import org.springframework.context.annotation.Configuration;
 public class RedisConfiguration {
 
     @Bean
-    public StatefulRedisConnection<String, String> redisClient(RedisURI redisURI) {
+    public RedisAsyncCommands<String, String> redisClient(RedisURI redisURI) {
         return RedisClient
             .create(redisURI)
-            .connect();
+            .connect()
+            .async();
     }
 
     @Bean
