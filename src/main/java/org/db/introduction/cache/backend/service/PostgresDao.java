@@ -2,14 +2,16 @@ package org.db.introduction.cache.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.db.introduction.cache.backend.mapper.PersonRowMapper;
 import org.db.introduction.cache.backend.model.Person;
+import org.db.introduction.cache.backend.model.Student;
 import org.db.introduction.cache.backend.util.LogInjector;
+import org.db.introduction.cache.backend.util.PrintableMapSqlParameterSource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -19,33 +21,103 @@ import java.util.function.Supplier;
 public class PostgresDao {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
-    private final PersonRowMapper personRowMapper;
 
-    List<Person> selectAll() {
+    List<Person> selectAllPersons(MapSqlParameterSource parameters) {
         return LogInjector.infoLog(() -> onRequest(
-            () -> jdbcTemplate.query("SELECT id, name, surname, passport, town FROM hse.person", personRowMapper)
+                () -> jdbcTemplate.query("SELECT * FROM selectallperson(:database)",
+                        parameters, new Person.RowMapper())
         ));
     }
 
-    List<Person> selectFirstN(MapSqlParameterSource parameters) {
+    List<Person> searchStringInPerson(MapSqlParameterSource parameters) {
         return LogInjector.infoLog(() -> onRequest(
-            () -> jdbcTemplate.query(
-                "SELECT id, name, surname, passport, town FROM hse.person LIMIT :amount", parameters, personRowMapper)
-        ), parameters);
+                () -> jdbcTemplate.query("SELECT * FROM searchstringinperson(:database, :searchString)",
+                        parameters, new Person.RowMapper())
+        ));
     }
 
-    Person selectPersonById(MapSqlParameterSource parameters) {
+    List<Student> searchStringInStudent(MapSqlParameterSource parameters) {
         return LogInjector.infoLog(() -> onRequest(
-            () -> jdbcTemplate.queryForObject(
-                "SELECT id, name, surname, passport, town FROM hse.person WHERE id = :id", parameters, personRowMapper)
-        ), parameters);
+                () -> jdbcTemplate.query("SELECT * FROM searchstringinstudent(:database, :searchString)",
+                        parameters, new Student.RowMapper())
+        ));
     }
 
-    void insertPerson(MapSqlParameterSource parameters) {
+    List<Student> selectAllStudents(MapSqlParameterSource parameters) {
+        return LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT * FROM selectallstudent(:database)",
+                        parameters, new Student.RowMapper())
+        ));
+    }
+
+    void createDatabaseSystem(MapSqlParameterSource parameters) {
         LogInjector.infoLog(() -> onRequest(
-            () -> jdbcTemplate.update("INSERT INTO hse.person (id, name, surname, passport, town) "
-                                          + "VALUES(:id, :name, :surname, :passport, :town)", parameters)
-        ), parameters);
+                () -> jdbcTemplate.query("SELECT createdatabasesystem(:database)",
+                        parameters, ResultSet::rowInserted)
+        ));
+    }
+
+    void deleteDatabaseSystem(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT deletedatabasesystem(:database)",
+                        parameters, ResultSet::rowDeleted)
+        ));
+    }
+
+    void removeAllPersons(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT removeallperson(:database)",
+                        parameters, ResultSet::rowDeleted)
+        ));
+    }
+
+    void removeAllStudents(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT removeallstudent(:database)",
+                        parameters, ResultSet::rowDeleted)
+        ));
+    }
+
+    void removeEntryPerson(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT removeentryperson(:database, :id)",
+                        parameters, ResultSet::rowDeleted)
+        ));
+    }
+
+    void removeEntryStudent(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT removeentrystudent(:database, :id)",
+                        parameters, ResultSet::rowDeleted)
+        ));
+    }
+
+    void insertEntryPerson(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT insertentryperson(:database, :name, :surname, :passport, :phone)",
+                        parameters, ResultSet::rowInserted)
+        ));
+    }
+
+    void insertEntryStudent(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT insertentrystudent(:database, :phone::varchar, :personId, :university)",
+                        parameters, ResultSet::rowDeleted)
+        ));
+    }
+
+    void clearDatabaseSystem(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT cleardatabasesystem(:database)",
+                        parameters, ResultSet::rowDeleted)
+        ));
+    }
+
+    List<String> selectExistingDatabases() {
+        return LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.queryForList("SELECT selectexistingdatabases()",
+                        new PrintableMapSqlParameterSource(), String.class)
+        ));
     }
 
     private <R> R onRequest(Supplier<R> getDataCallback) {

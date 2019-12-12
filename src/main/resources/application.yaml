@@ -4,8 +4,8 @@ spring:
 postgres:
   driver: "org.postgresql.Driver"
   url: "jdbc:postgresql://localhost:54320/hse"
-  password: "strong password"
-  login: "local_app"
+  password: "postgres"
+  login: "postgres"
 server:
   port: 8080
 logging:
