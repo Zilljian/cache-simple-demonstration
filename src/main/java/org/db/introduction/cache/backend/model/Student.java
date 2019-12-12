@@ -1,5 +1,6 @@
 package org.db.introduction.cache.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import org.db.introduction.cache.backend.util.PrintableMapSqlParameterSource;
@@ -32,6 +33,7 @@ public class Student {
         }
     }
 
+    @JsonIgnore
     public MapSqlParameterSource getParameters() {
         return new PrintableMapSqlParameterSource()
                 .addValue("id", getId())
