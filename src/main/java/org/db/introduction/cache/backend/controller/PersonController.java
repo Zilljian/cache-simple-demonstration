@@ -54,7 +54,7 @@ public class PersonController {
                 () -> postgresDaoAdapter.updateEntryPerson(database, person));
     }
 
-    @GetMapping(value = "/search}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Person> searchStringInPerson(@RequestParam String database,
                                              @RequestParam String searchString) {
         log.info("Received request for searching in persons with database = {} and search string = {}", database, searchString);

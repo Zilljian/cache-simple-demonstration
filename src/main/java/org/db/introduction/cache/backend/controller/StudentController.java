@@ -54,7 +54,7 @@ public class StudentController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/search}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Student> searchStringInStudent(@RequestParam String database,
                                                @RequestParam String searchString) {
         log.info("Received request for searching in students with database = {} and search string = {}", database, searchString);
