@@ -131,8 +131,6 @@ END;
 $$
     LANGUAGE plpgsql;
 
-call insertEntryStudent('hse', 'true', 333, 'ETH');
-
 CREATE OR REPLACE FUNCTION insertEntryPerson(schemaName text, name varchar,
                                              surname varchar, passport varchar, phone varchar)
     RETURNS void
