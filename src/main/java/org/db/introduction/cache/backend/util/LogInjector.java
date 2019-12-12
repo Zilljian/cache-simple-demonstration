@@ -21,23 +21,23 @@ public class LogInjector {
     private static final String OUT_LOG_TEMPLATE_WITH_PARAMETERS = OUT_LOG_TEMPLATE + " {}";
 
     public static <T> T infoLog(Supplier<T> callback, Object... parameters) {
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        StackTraceElement caller = stackTrace[stackTrace.length > 2 ? 2 : 1];
-        Logger log = LoggerFactory.getLogger(caller.getClassName());
+        var stackTrace = Thread.currentThread().getStackTrace();
+        var caller = stackTrace[stackTrace.length > 2 ? 2 : 1];
+        var log = LoggerFactory.getLogger(caller.getClassName());
         return infoLog(callback, log, caller.getMethodName(), parameters);
     }
 
     private static <T> T infoLog(Supplier<T> callback, Logger log, String text, Object... parameters) {
         log.info(inLogTemplate(parameters), text, joinParameters(parameters));
-        T result = callback.get();
+        var result = callback.get();
         log.info(OUT_LOG_TEMPLATE_WITH_PARAMETERS, text, result);
         return result;
     }
 
     public static void infoLog(Runnable callback, Object... parameters) {
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        StackTraceElement caller = stackTrace[stackTrace.length > 2 ? 2 : 1];
-        Logger log = LoggerFactory.getLogger(caller.getClassName());
+        var stackTrace = Thread.currentThread().getStackTrace();
+        var caller = stackTrace[stackTrace.length > 2 ? 2 : 1];
+        var log = LoggerFactory.getLogger(caller.getClassName());
         infoLog(callback, log, caller.getMethodName(), parameters);
     }
 
@@ -48,9 +48,9 @@ public class LogInjector {
     }
 
     public static <T> T errorAwareInfoLog(Supplier<T> callback, Object... parameters) {
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        StackTraceElement caller = stackTrace[stackTrace.length > 2 ? 2 : 1];
-        Logger log = LoggerFactory.getLogger(caller.getClassName());
+        var stackTrace = Thread.currentThread().getStackTrace();
+        var caller = stackTrace[stackTrace.length > 2 ? 2 : 1];
+        var log = LoggerFactory.getLogger(caller.getClassName());
         try {
             return infoLog(callback, log, caller.getMethodName(), parameters);
         } catch (Exception e) {
@@ -60,9 +60,9 @@ public class LogInjector {
     }
 
     public static void errorAwareInfoLog(Runnable callback, Object... parameters) {
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        StackTraceElement caller = stackTrace[stackTrace.length > 2 ? 2 : 1];
-        Logger log = LoggerFactory.getLogger(caller.getClassName());
+        var stackTrace = Thread.currentThread().getStackTrace();
+        var caller = stackTrace[stackTrace.length > 2 ? 2 : 1];
+        var log = LoggerFactory.getLogger(caller.getClassName());
         try {
             infoLog(callback, log, caller.getMethodName(), parameters);
         } catch (Exception e) {
