@@ -290,11 +290,3 @@ GRANT EXECUTE ON FUNCTION searchStringInPerson(schemaName text, searchString tex
 GRANT EXECUTE ON FUNCTION searchStringInStudent(schemaName text, searchString text) TO ui_user;
 GRANT EXECUTE ON FUNCTION clearDatabaseSystem(schemaName text) TO ui_user;
 GRANT EXECUTE ON FUNCTION selectExistingDatabases() TO ui_user;
-
-/*update hse.person
-set passport = md5(random()::varchar)
-where phone is null;
-
-update hse.person
-set phone = (floor(random() * 80000000000 + 9999999999)::bigint)::varchar
-where passport is not null;*/
