@@ -90,7 +90,13 @@ public class PostgresDaoAdapter {
     public void updateEntryPerson(String database, Person person) {
         var parameters = person.getParameters()
                 .addValue("database", database);
-        postgresDao.removeEntryPerson(parameters);
+        postgresDao.updateEntryPerson(parameters);
+    }
+
+    public void updateEntryStudent(String database, Student student) {
+        var parameters = student.getParameters()
+                .addValue("database", database);
+        postgresDao.updateEntryStudent(parameters);
     }
 
     public void insertEntryStudent(String database, Student student) {
@@ -105,11 +111,6 @@ public class PostgresDaoAdapter {
         postgresDao.insertEntryPerson(parameters);
     }
 
-    public void updateEntryStudent(String database, Student student) {
-        var parameters = student.getParameters()
-                .addValue("database", database);
-        postgresDao.removeEntryStudent(parameters);
-    }
 
     public void clearDatabaseSystem(String database) {
         var parameters = new PrintableMapSqlParameterSource()

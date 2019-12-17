@@ -64,7 +64,7 @@ public class PersonController {
 
     @DeleteMapping(value = "/{id:[\\d]+}")
     public void removeEntryPerson(@RequestParam String database,
-                                  @PathParam("id") Long id) {
+                                  @PathVariable("id") Long id) {
         log.info("Received request for removing entry in persons with database = {} and id = {}", database, id);
         LogInjector.errorAwareInfoLog(
                 () -> postgresDaoAdapter.removeEntryPerson(database, id));

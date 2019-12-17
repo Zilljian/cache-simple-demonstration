@@ -11,7 +11,7 @@ BEGIN
                 surname     VARCHAR(255) NOT NULL,
                 passport    VARCHAR(255) UNIQUE,
                 phone       VARCHAR(15),
-                external_id BIGSERIAL UNIQUE
+                external_id BIGSERIAL UNIQUE,
                 created     TIMESTAMP default now(),
                 updated     TIMESTAMP default now()
             );
@@ -36,19 +36,20 @@ BEGIN
         RETURN;
     ELSE
         EXECUTE format(
-                ' SCHEMA CASCADE %I', schemaName
+                'DROP SCHEMA CASCADE %I;', schemaName
             );
     END IF;
-END;
+END ;
 $$
     LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION selectAllStudent(schemaName text)
     RETURNS TABLE
             (
-                id        bigint,
-                phone     boolean,
-                person_id bigint
+                id         bigint,
+                phone      boolean,
+                person_id  bigint,
+                university varchar
             )
 AS
 $$
@@ -88,7 +89,7 @@ AS
 $$
 BEGIN
     EXECUTE format(
-            'DELETE * FROM %I.person', schemaName
+            'DELETE FROM %I.person', schemaName
         );
 END;
 $$
@@ -100,20 +101,7 @@ AS
 $$
 BEGIN
     EXECUTE format(
-            'DELETE * FROM %I.student', schemaName
-        );
-END;
-$$
-    LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION updateEntryStudent(schemaName text, id bigint, phone boolean)
-    RETURNS void
-AS
-$$
-BEGIN
-    EXECUTE format(
-            'UPDATE %I.student SET phone = %I
-            WHERE id = %I', schemaName, phone, id
+            'DELETE FROM %s.student', schemaName
         );
 END;
 $$
@@ -153,12 +141,28 @@ CREATE OR REPLACE FUNCTION updateEntryPerson(schemaName text, id bigint,
 AS
 $$
 BEGIN
-    EXECUTE format(
-            'UPDATE %I.person SET
-            name = %I, surname = %I, passport = %I,
-            phone = %I, updated = now()
-            WHERE id = %I', schemaName, name, surname,
-            passport, phone, id
+    EXECUTE format('UPDATE %I.person SET
+                   name = ' || quote_literal('%s') ||
+                   ', surname = ' || quote_literal('%s') ||
+                   ', passport = ' || quote_literal('%s') ||
+                   ', phone = ' || quote_literal('%s') ||
+                   ', updated = now()
+                   WHERE id = %s;', schemaName, name, surname,
+                   passport, phone, id
+        );
+END;
+$$
+    LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION updateEntryStudent(schemaName text, id bigint,
+                                              university varchar, phone varchar)
+    RETURNS void
+AS
+$$
+BEGIN
+    EXECUTE format('UPDATE %I.student SET
+                    phone = %s, university = ' || quote_literal('%s') ||
+                   ' WHERE id = %s;', schemaName, phone, university, id
         );
 END;
 $$
@@ -170,8 +174,7 @@ AS
 $$
 BEGIN
     EXECUTE format(
-            'DELETE FROM %I.student
-            WHERE id = %I', schemaName, id
+            'DELETE FROM %I.student WHERE id = %s;', schemaName, id
         );
 END;
 $$
@@ -184,7 +187,7 @@ $$
 BEGIN
     EXECUTE format(
             'DELETE FROM %I.person
-            WHERE id = %I', schemaName, id
+            WHERE id = %s', schemaName, id
         );
 END;
 $$
@@ -222,6 +225,7 @@ CREATE OR REPLACE FUNCTION searchStringInStudent(schemaName text, searchString t
     RETURNS TABLE
             (
                 id        bigint,
+                university varchar,
                 phone     boolean,
                 person_id bigint
             )
@@ -230,7 +234,7 @@ $$
 BEGIN
     RETURN QUERY EXECUTE
         format('SELECT * FROM %I.student
-                WHERE university ILIKE ' || quote_literal('%%%s%%'),
+                WHERE university ILIKE ' || quote_literal('%%%s%%') || ';',
                schemaName, searchString
             );
 END;
@@ -243,9 +247,9 @@ AS
 $$
 BEGIN
     EXECUTE
-        format('DELETE * FROM %I.person;
-               DELETE * FROM %I.student;',
-               schemaName
+        format('DELETE FROM %I.student;' ||
+               'DELETE FROM %I.person;',
+               schemaName, schemaName
             );
 END;
 $$
@@ -286,3 +290,11 @@ GRANT EXECUTE ON FUNCTION searchStringInPerson(schemaName text, searchString tex
 GRANT EXECUTE ON FUNCTION searchStringInStudent(schemaName text, searchString text) TO ui_user;
 GRANT EXECUTE ON FUNCTION clearDatabaseSystem(schemaName text) TO ui_user;
 GRANT EXECUTE ON FUNCTION selectExistingDatabases() TO ui_user;
+
+/*update hse.person
+set passport = md5(random()::varchar)
+where phone is null;
+
+update hse.person
+set phone = (floor(random() * 80000000000 + 9999999999)::bigint)::varchar
+where passport is not null;*/

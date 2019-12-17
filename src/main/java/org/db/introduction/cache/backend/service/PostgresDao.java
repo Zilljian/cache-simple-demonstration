@@ -92,6 +92,21 @@ public class PostgresDao {
         ));
     }
 
+    void updateEntryPerson(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT " +
+                                "updateentryperson(:database, :id, :name, :surname, :passport, :phone)",
+                        parameters, ResultSet::rowDeleted)
+        ));
+    }
+
+    void updateEntryStudent(MapSqlParameterSource parameters) {
+        LogInjector.infoLog(() -> onRequest(
+                () -> jdbcTemplate.query("SELECT updateentrystudent(:database, :id, :university, :phone::varchar)",
+                        parameters, ResultSet::rowDeleted)
+        ));
+    }
+
     void insertEntryPerson(MapSqlParameterSource parameters) {
         LogInjector.infoLog(() -> onRequest(
                 () -> jdbcTemplate.query("SELECT insertentryperson(:database, :name, :surname, :passport, :phone)",
