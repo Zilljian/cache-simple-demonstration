@@ -36,7 +36,7 @@ BEGIN
         RETURN;
     ELSE
         EXECUTE format(
-                'DROP SCHEMA CASCADE %I;', schemaName
+                'DROP SCHEMA %I CASCADE;', schemaName
             );
     END IF;
 END ;
@@ -241,6 +241,11 @@ END;
 $$
     LANGUAGE plpgsql;
 
+select format('SELECT * FROM %I.student
+                WHERE university ILIKE ' || quote_literal('%%%s%%') || ';',
+              'schemaName', 'searchString'
+           );
+
 CREATE OR REPLACE FUNCTION clearDatabaseSystem(schemaName text)
     RETURNS VOID
 AS
@@ -272,7 +277,7 @@ END;
 $$
     LANGUAGE plpgsql;
 
-CREATE USER ui_user WITH PASSWORD 'ui-password';
+/*CREATE USER ui_user WITH PASSWORD 'ui-password';
 grant all on database hse to ui_user;
 GRANT EXECUTE ON FUNCTION selectAllPerson(schemaName text) TO ui_user;
 GRANT EXECUTE ON FUNCTION selectAllStudent(schemaName text) TO ui_user;
@@ -290,3 +295,4 @@ GRANT EXECUTE ON FUNCTION searchStringInPerson(schemaName text, searchString tex
 GRANT EXECUTE ON FUNCTION searchStringInStudent(schemaName text, searchString text) TO ui_user;
 GRANT EXECUTE ON FUNCTION clearDatabaseSystem(schemaName text) TO ui_user;
 GRANT EXECUTE ON FUNCTION selectExistingDatabases() TO ui_user;
+*/
