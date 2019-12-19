@@ -47,9 +47,9 @@ CREATE OR REPLACE FUNCTION selectAllStudent(schemaName text)
     RETURNS TABLE
             (
                 id         bigint,
+                university varchar,
                 phone      boolean,
-                person_id  bigint,
-                university varchar
+                person_id  bigint
             )
 AS
 $$
@@ -276,23 +276,3 @@ BEGIN
 END;
 $$
     LANGUAGE plpgsql;
-
-/*CREATE USER ui_user WITH PASSWORD 'ui-password';
-grant all on database hse to ui_user;
-GRANT EXECUTE ON FUNCTION selectAllPerson(schemaName text) TO ui_user;
-GRANT EXECUTE ON FUNCTION selectAllStudent(schemaName text) TO ui_user;
-GRANT EXECUTE ON FUNCTION removeAllStudent(schemaName text) TO ui_user;
-GRANT EXECUTE ON FUNCTION removeAllPerson(schemaName text) TO ui_user;
-GRANT EXECUTE ON FUNCTION updateEntryPerson(schemaName text, id bigint, name varchar, surname varchar, passport varchar, phone varchar) TO ui_user;
-GRANT EXECUTE ON FUNCTION updateEntryStudent(schemaName text, id bigint, phone boolean) TO ui_user;
-GRANT EXECUTE ON FUNCTION removeEntryPerson(schemaName text, id bigint) TO ui_user;
-GRANT EXECUTE ON FUNCTION removeEntryStudent(schemaName text, id bigint) TO ui_user;
-GRANT EXECUTE ON FUNCTION insertEntryStudent(schemaName text, phone varchar, personId bigint, university varchar) TO ui_user;
-GRANT EXECUTE ON FUNCTION insertEntryPerson(schemaName text, name varchar, surname varchar, passport varchar, phone varchar) TO ui_user;
-GRANT EXECUTE ON FUNCTION deleteDatabaseSystem(schemaName text) TO ui_user;
-GRANT EXECUTE ON FUNCTION createDatabaseSystem(schemaName text) TO ui_user;
-GRANT EXECUTE ON FUNCTION searchStringInPerson(schemaName text, searchString text) TO ui_user;
-GRANT EXECUTE ON FUNCTION searchStringInStudent(schemaName text, searchString text) TO ui_user;
-GRANT EXECUTE ON FUNCTION clearDatabaseSystem(schemaName text) TO ui_user;
-GRANT EXECUTE ON FUNCTION selectExistingDatabases() TO ui_user;
-*/
